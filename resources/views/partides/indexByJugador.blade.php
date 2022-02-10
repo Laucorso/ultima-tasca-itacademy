@@ -6,9 +6,7 @@
         <div class ="mt-6 md:w-1/2 px-3 mb-6 md:mb-0">
             <form action= "{{ route('partides.store', ['id'=>$jugador->id]) }}" method ="POST"> 
             @csrf
-                <input type ="hidden" value="{{ $dau1 = 5 }}" name = 'dau1'>
-                <input type ="hidden" value="{{ $dau1 = 3 }}" name = 'dau2'>
-                
+
                 <button type = "submit">Partida Nova</button>
             </form>
         </div>

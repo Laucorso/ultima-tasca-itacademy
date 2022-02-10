@@ -30,7 +30,7 @@ class PartidaController extends Controller
      */
     public function create()
     {
-
+  
     }
     /**
      * Store a newly created resource in storage.
@@ -40,29 +40,24 @@ class PartidaController extends Controller
      */
     public function store(Request $request, $id)
     {
-
         $jugador = Jugador::find($id);
-        dd($request->input('dau1'));
-        $request->validate([
-            'dau1' => 'integer|min:1|max:6|required',
-            'dau2' => 'integer|min:1|max:6|required',
-        ]);
-        
+        $dau1 = rand(1,6);
+        $dau2 = rand(1,6);
 
-        if ('dau1'+'dau2' === 7){
+        if ($dau1+$dau2 === 7){
             $resultat = true;
         }else{
             $resultat = false;
         };
-
-        Partida::create([
-            'dau1' => 2,
-            'dau2' => 2,
-            'resultat' => TRUE,
-            'jugador_id' => 1
+       
+        $partidaNova = Partida::create([
+            'dau1' => $dau1,
+            'dau2' => $dau2,
+            'resultat' => $resultat,
+            'jugador_id' => $jugador->id,
         ]);
         
-        return redirect()->route('partides.indexByJugador', compact(['id' =>$jugador->id], 'partida'));
+        return redirect()->route('vistaJugador', compact('id', 'partidaNova'));
     }
 
 
