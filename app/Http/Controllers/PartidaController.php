@@ -69,9 +69,7 @@ class PartidaController extends Controller
      */
     public function destroy($id)
     {   
-        $jugador = Jugador::find($id);
-        $partides = $jugador->partidas;
-        $partides->delete();
-        return redirect()->route('partides.indexByJugador');
+        $partides = Partida::where('jugador_id', $id)->get()->each->delete();
+        return redirect()->route('vistaJugador', compact('id', 'partides'));
     }
 }
