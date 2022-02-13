@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.plantillabase')
 @section('title', 'Edita el teu jugador')
 @section('content')
 

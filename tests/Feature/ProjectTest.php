@@ -22,7 +22,7 @@ class ProjectTest extends TestCase
     public function partida_can_be_created()
     {
         $this->withoutExceptionHandling();
-        $response = $this->post('', [
+        $response = $this->post('partides.indexByJugador', [
             'dau1' => 6,
             'dau2' => 4,
             'resultat' => 0,
@@ -40,22 +40,23 @@ class ProjectTest extends TestCase
         $response->assertRedirect('partides.indexByJugador');
     }
     /**@test */
-    public function partides_list_can_be_retrieved()
+    public function partides_by_jugador_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('');
-        $response ->assertOk();
-        $partides = Partida::all();
+        $jugador = User::Auth()->jugador;
+        $partides = $jugador->partidas;
 
+        $response = $this->get('players/{$jugador->id}/games');
+        $response ->assertOk();
         $response ->assertViewIs('partides.indexByJugador');
-        $response ->assertViewHas('partides', $partides);
+        $response ->assertViewHas($partides, ['id' => $jugador->id]);
 
     }
     /**@test */
     public function jugadors_list_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('');
+        $response = $this->get('players');
         $response ->assertOk();
         $jugadors = Jugador::all();
         //compararem valors a la vista després de agafar tots els jugadors
@@ -76,7 +77,7 @@ class ProjectTest extends TestCase
         ]); 
         $jugador = Jugador::findOrFail($jugador[0]->id); //jugador q ha d tenir la info modificada
         $this ->assertEquals($jugador ->nickname, 'Nickname modificat'); //info ha de ser igual a la q hem introduit
-        $response ->assertRedirect('/players/{$players[0]->id}'); //si tot està ok ens retornarà aquesta vista
+        $response ->assertRedirect('/players/{$jugador[0]->id}'); //si tot està ok ens retornarà aquesta vista
         
     }
     

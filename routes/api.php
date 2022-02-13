@@ -30,11 +30,11 @@ Route::middleware('auth:api')->group(function(){
 
     Route::post('players/{id}/games', [PartidaController::class, 'store'])->name('partides.store');
     Route::delete('players/{id}/games', [PartidaController::class, 'destroy'])->name('partides.destroy');
-    Route::get('players/{id}', [JugadorController::class, 'edit'])->name('jugadors.edit');
+    Route::get('players/{id}/edit', [JugadorController::class, 'edit'])->name('jugadors.edit');
     Route::put('players/{id}', [JugadorController::class, 'update'])->name('jugadors.update');
     Route::get('players/ranking', [JugadorController::class, 'percentatgeExitTotal'])->name('rankings.rankingTotals');
-    Route::get('players/ranking/loser', [StatusController::class, 'rankingJugadorLoser'])->name('rankings.rankingLoser');
-    Route::get('players/ranking/winner', [StatusController::class, 'rankingJugadorWinner'])->name('rankings.rankingWinner');
+    Route::get('players/ranking/loser', [StatusController::class, 'rankingLoser'])->name('rankingLoser');
+    Route::get('players/ranking/winner', [StatusController::class, 'rankingWinner'])->name('rankingWinner');
 
     Route::delete('logout', [PassportController::class, 'logout'])->name('logout');
 });

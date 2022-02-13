@@ -57,7 +57,7 @@ class PartidaController extends Controller
             'jugador_id' => $jugador->id,
         ]);
         
-        return redirect()->route('vistaJugador', compact('id', 'partidaNova'));
+        return redirect()->route('vistaJugador', compact('id', 'partidaNova'))->with(['success' => 'Partida Realitzada Amb Èxit']);
     }
 
 
@@ -70,6 +70,6 @@ class PartidaController extends Controller
     public function destroy($id)
     {   
         $partides = Partida::where('jugador_id', $id)->get()->each->delete();
-        return redirect()->route('vistaJugador', compact('id', 'partides'));
+        return redirect()->route('vistaJugador', compact('id', 'partides'))->with(['success' => 'Partides eliminades']);
     }
 }

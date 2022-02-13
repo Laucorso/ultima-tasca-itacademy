@@ -25,7 +25,7 @@ class JugadorController extends Controller
        $jugadors = Jugador::all();
        $percentatgeSumatori = 0;
        foreach ($jugadors as $jugador)
-       {
+       {    
             $percentatgeSumatori =  $percentatgeSumatori + $jugador->percentatge_exit;
        }
 
@@ -67,7 +67,7 @@ class JugadorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Jugador $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nickname' => 'unique|required|min:3|string',
@@ -75,7 +75,7 @@ class JugadorController extends Controller
         $jugador = Jugador::find($id);
         $jugador -> nickname = $request -> input('nickname');
         $jugador ->update();
-        return redirect()->route('partides.indexByJugador');
+        return view('jugadors.show', compact('id', 'jugador'));
     }
 
 }
