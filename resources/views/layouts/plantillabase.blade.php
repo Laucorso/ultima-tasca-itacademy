@@ -17,20 +17,16 @@
                 <!--Screen-->
                 <div class="min-h-screen flex flex-col">
                     
-                    <!--Header Section Starts Here-->
-                    @include('layouts.partials.header')
-                    <!--/Header-->
-            
+                    <!--@include('partials.header')-->
+                    
                     <div class="flex flex-1">
-                        <!--Main-->
                         <main class="bg-white-300 flex-1 p-3 overflow-hidden">
                                         
                             @yield('content')
                                                     
                         </main>
-                        <!--/Main-->
                     </div>
-                    
+
                 </div>
             </div>
             <script src= "{!! asset('theme/main.js') !!}"></script>

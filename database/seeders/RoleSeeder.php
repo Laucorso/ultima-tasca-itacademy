@@ -18,8 +18,14 @@ class RoleSeeder extends Seeder
     {
         $admin = Role::create(['name' => 'admin']);
         $jugador = Role::create(['name' => 'jugador']);
-        Permission::create(['name' => 'vistaAdmin'])->assignRole($admin); 
+        Permission::create(['name' => 'vistaAdmin'])->assignRole($admin);
+        Permission::create(['name' => 'rankingtotal'])->assignRole($admin);
+        Permission::create(['name' => 'rankingLoser'])->assignRole($admin);
+        Permission::create(['name' => 'rankingWinner'])->assignRole($admin);
         Permission::create(['name' => 'vistaJugador'])->assignRole($jugador);
-        Permission::create(['name' => 'partides.store'])->assignRole($jugador);
+        Permission::create(['name' => 'edit.nickname'])->assignRole($jugador);
+        Permission::create(['name' => 'update.nickname'])->assignRole($jugador);
+
+
     }
 }

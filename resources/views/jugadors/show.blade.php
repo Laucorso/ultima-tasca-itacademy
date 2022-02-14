@@ -1,7 +1,7 @@
 @extends('layouts.plantillabase')
 @yield('title', 'Jugador '. $jugador->id.' editat')
-@yield('content')
-    <h1 class = "font-extrabold text-3xl uppercase underline mb-2">Nickname actualitzat</h1>
+@can('update.nickname')
+<h1 class = "font-extrabold text-3xl uppercase underline mb-2">Nickname actualitzat</h1>
     <p>Nickname: {{$jugador->nickname}}</p>
     <div class = "m-4">
         <a href = "{{route ('vistaJugador', ['id'=> $jugador->id])}}">
@@ -11,4 +11,4 @@
             </button>
         </a>
     </div>
-@endsection
+@endcan
