@@ -4,6 +4,10 @@
 
 <div class ="">
 
-   {{$jugadorsByEstadistica}}
+
+   {{json_decode($jugadorsByEstadistica, true)}};
+
+
+
    
 </div>
