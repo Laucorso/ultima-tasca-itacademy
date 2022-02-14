@@ -42,9 +42,9 @@ class StatusController extends Controller
 
         }
             array_multisort($percentatge, SORT_DESC, $jugadorsByEstadistica); //estic ordenant els elements pel VALOR percentatge. descendent                               
-            $workingArray = json_encode($jugadorsByEstadistica,true); //json_encode() creates a json string from an array or data
-            return view('rankings.rankingWinner', with(['jugadorsByEstadistica' => $workingArray]));
-            
+            $workingArray = json_encode($jugadorsByEstadistica[0],true); //json_encode() creates a json string from an array or data
+            return view('rankings.rankingLoser', with(['jugadorsByEstadistica' => $workingArray]));
+
     }
     
 
