@@ -21,8 +21,30 @@ class StatusController extends Controller
         ->where ('partidas.resultat', '1')
         ->groupBy('jugadors.id')
         ->get();
-        return view('rankings.rankingWinner', compact('jugador')); 
+        //return view('rankings.rankingWinner', compact('jugador')); 
 
+        foreach($jugadors as $jugador){
+            
+            $partidesTotals = Partida::where('jugador_id', $jugador->id)->count();
+            $partidesGuanyades = $jugador->partidas_guanyades;
+            $percentatge = round($partidesGuanyades*100/$partidesTotals);
+            $jugadorsByEstadistica[] = ([
+                'jugador_id' =>$jugador->id,
+                'partidesTotals' => $partidesTotals,
+                'partidesGuanyades' => $partidesGuanyades,
+                'percentatge' => $percentatge
+            ]);
+
+            $percentatge = [];
+            foreach ($jugadorsByEstadistica as $key => $row) {
+                $percentatge[$key] = $row['percentatge'];
+            }
+
+        }
+            array_multisort($percentatge, SORT_DESC, $jugadorsByEstadistica); //estic ordenant els elements pel VALOR percentatge. descendent                               
+            $workingArray = json_encode($jugadorsByEstadistica,true); //json_encode() creates a json string from an array or data
+            return view('rankings.rankingWinner', with(['jugadorsByEstadistica' => $workingArray]));
+            
     }
     
 
@@ -47,16 +69,15 @@ class StatusController extends Controller
                 'percentatge' => $percentatge
             ]);
 
-
             $percentatge = [];
             foreach ($jugadorsByEstadistica as $key => $row) {
                 $percentatge[$key] = $row['percentatge'];
             }
 
         }
-            array_multisort($percentatge, SORT_DESC, $jugadorsByEstadistica); //estic ordenant els elements pel VALOR percentatge. descendent
-            dd($jugadorsByEstadistica[0]); //agafo l'element 0 de l'array però estic perdent el grup d'array anterior? no manté l'associació amb les key?
-            return view('rankings.rankingLoser', );
+            array_multisort($percentatge, SORT_DESC, $jugadorsByEstadistica); //estic ordenant els elements pel VALOR percentatge. descendent                               
+            $workingArray = json_encode($jugadorsByEstadistica[0],true); //json_encode() creates a json string from an array or data
+            return view('rankings.rankingLoser', with(['jugadorsByEstadistica' => $workingArray]));
             
     }
         

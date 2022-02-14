@@ -33,8 +33,8 @@ Route::middleware('auth:api')->group(function(){
     Route::get('players/{id}/edit', [JugadorController::class, 'edit'])->middleware('can:edit.nickname')->name('jugadors.edit');
     Route::put('players/{id}', [JugadorController::class, 'update'])->middleware('can:update.nickname')->name('jugadors.update');
     Route::get('players/ranking', [JugadorController::class, 'percentatgeExitTotal'])->middleware('can:rankingtotal')->name('rankingTotals');
-    Route::get('players/ranking/loser', [StatusController::class, 'rankingLoser'])->middleware('can:rankingWinner')->name('rankingLoser');
-    Route::get('players/ranking/winner', [StatusController::class, 'rankingWinner'])->middleware('can:rankingLoser')->name('rankingWinner');
+    Route::get('players/ranking/loser', [StatusController::class, 'rankingLoser'])->name('rankingLoser');
+    Route::get('players/ranking/winner', [StatusController::class, 'rankingWinner'])->name('rankingWinner');
 
     Route::delete('logout', [PassportController::class, 'logout'])->name('logout');
 });

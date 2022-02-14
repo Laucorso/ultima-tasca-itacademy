@@ -3,7 +3,7 @@
 
 
 <div class ="">
-    {{$percentatge}}
 
-    
+   {{$jugadorsByEstadistica}}
+   
 </div>
