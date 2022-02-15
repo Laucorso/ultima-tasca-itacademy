@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Jugador;
+use App\Models\User;
 
 class JugadorController extends Controller
 {
@@ -78,11 +79,11 @@ class JugadorController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+    
         $request->validate([
-            'nickname' => 'required|min:3|string',
+            'nickname' => 'required|unique:jugadors,nickname|min:3|string',
         ]);
-        $jugador = Auth::user()->jugador;
+        $jugador = Jugador::find($id);
         $jugador -> nickname = $request -> input('nickname');
         $jugador ->update();
         return view('jugadors.show', compact('id', 'jugador'))->with(['success' => 'Nickname actualitzat amb èxit']);

@@ -4,7 +4,7 @@
 
 
     <div class ="mt-6 md:w-1/2 px-3 mb-6 md:mb-0">
-        <form action= "{{ route('jugadors.update', ['id' => $user->id]) }}" method ="POST">
+        <form action= "{{ route('jugadors.update', ['id' => $jugador->id]) }}" method ="POST">
         @method('PUT')
         @csrf
 

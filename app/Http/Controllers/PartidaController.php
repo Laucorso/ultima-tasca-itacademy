@@ -23,9 +23,7 @@ class PartidaController extends Controller
         $jugador = auth::user()->jugador;
         $partides = $jugador->partidas;
       
-        return view('partides.indexByJugador', compact('partides', 'id'));
-        //vull la mtx vista però no tinc cap partida llavors el foreach no funciona pq partides es undefined
-        //fer if a la vista directament? if partides = 0 else fesme el foreach
+        return view('partides.indexByJugador', compact('partides', 'jugador'));
     }
 
 

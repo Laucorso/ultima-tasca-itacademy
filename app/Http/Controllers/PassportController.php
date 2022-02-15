@@ -38,11 +38,12 @@ class PassportController extends Controller
         }
         $id = Auth::user()->id;
         $user = User::find($id);
+        $jugador = Auth::user()->jugador;
 
         if ($user->hasRole('admin')){
             return redirect()->route('vistaAdmin'); 
         }else{
-            return redirect()->route('vistaJugador', compact('user'));
+            return redirect()->route('vistaJugador', compact('user', 'jugador'));
         }
     
     }

@@ -1,7 +1,7 @@
 @extends('layouts.plantillabase')
 @yield('title', 'Llistat Jugadors')
 @yield('content')
-@can('vistaAdmin')
+
     <table class="table-auto md:border-collapse">
 
         <thead>
@@ -31,4 +31,4 @@
                     
                 </a>
             </div>
-@endcan
+

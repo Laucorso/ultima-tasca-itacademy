@@ -18,8 +18,6 @@ class ProjectTest extends TestCase
      *
      * @return void
      */
-   
-
 
     /** @test */
     public function partida_can_be_created()
@@ -27,8 +25,8 @@ class ProjectTest extends TestCase
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
         
-        $jugador = auth::user()->jugador;
-        $response = $this->post('api/players/games'.$jugador->id, [
+        $id = auth::user()->id;
+        $response = $this->post('api/players/games'.$id, [
             'dau1' => 6,
             'dau2' => 4,
             'resultat' => 0,
@@ -43,7 +41,7 @@ class ProjectTest extends TestCase
         $this->assertEquals($partida->resultat, 0); //comparem valors
 
 
-        $response->assertRedirect('partides.indexByJugador', ['id' =>$jugador->id]);
+        $response->assertRedirect('partides.indexByJugador', $id);
     }
     /**@test */
     public function partides_by_jugador_can_be_retrieved()
