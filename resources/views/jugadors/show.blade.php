@@ -1,6 +1,8 @@
 @extends('layouts.plantillabase')
 @yield('title', 'Jugador '. $jugador->id)
 
+@can('jugadors.show')
+
 <h1 class = "font-extrabold text-2xl uppercase underline mb-2">Nickname actualitzat</h1>
     <p>Nickname => {{$jugador->nickname}}</p>
     <div class = "m-4">
@@ -11,3 +13,4 @@
             </button>
         </a>
     </div>
+@endcan

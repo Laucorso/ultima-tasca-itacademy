@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Partida;
 use App\Models\Jugador;
 use App\Models\User;
@@ -24,9 +23,12 @@ class ProjectTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
+        $user = User::factory(1)->create();
         
-        $id = auth::user()->id;
-        $response = $this->post('api/players/games'.$id, [
+        
+        //Jugador::factory(1)->create();
+        
+        $response = $this->post('api/players/games'.$user->id, [
             'dau1' => 6,
             'dau2' => 4,
             'resultat' => 0,
@@ -41,15 +43,15 @@ class ProjectTest extends TestCase
         $this->assertEquals($partida->resultat, 0); //comparem valors
 
 
-        $response->assertRedirect('partides.indexByJugador', $id);
+        $response->assertRedirect('partides.indexByJugador', $user->id);
     }
-    /**@test */
+    /** @test */
     public function partides_by_jugador_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
-
-        $jugador = Auth::user()->jugador;
+        $jugador = Jugador::factory(1)->create();  
+        //falla pq si anem als seeders veiem q m'haig de crear usuaris per crear jugador (user_id) sino user id no existeix
         $partides = $jugador->partidas;
 
         $response = $this->get('api/players/games'.$jugador->id);
@@ -58,12 +60,13 @@ class ProjectTest extends TestCase
         $response ->assertViewHas($partides, ['id' => $jugador->id]);
 
     }
-    /**@test */
+    /** @test */
     public function jugadors_list_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
 
+        $jugadors = Jugador::factory(2)->create();  
         $response = $this->get('api/players');
         $response ->assertOk();
         $jugadors = Jugador::all();
@@ -97,7 +100,7 @@ class ProjectTest extends TestCase
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
         
-        $jugador = Auth::user()->jugador;
+        $jugador = Jugador::factory(1)->create();  
         $partides = $jugador->partidas;
         $response = $this->delete('/players/games'.$jugador->id);
         $this->assertCount(0, $partides); //el recompte ha de ser 0 després d'eliminar
@@ -108,8 +111,9 @@ class ProjectTest extends TestCase
     public function nickname_required(){
         $this->withoutMiddleware();
 
-        $id = Auth::user()->id;
-        $response = $this->post('api/players/'.$id,[
+        $jugador = Jugador::factory(1)->create();  
+        //falla pq si anem als seeders veiem q m'haig de crear usuaris per crear jugador (user_id)
+        $response = $this->post('api/players/'.$jugador,[
             'nickname' =>"",
         ]);
         $response ->assertSessionHasErrors(['nickname']);

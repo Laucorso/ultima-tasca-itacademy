@@ -1,5 +1,7 @@
 @extends('layouts.plantillabase')
 @yield('Title', 'Loser')
+@can('rankingLoser')
+
 
 
 <div class ="">
@@ -9,5 +11,5 @@
    <h1>Percentatge => {{json_decode($jugadorsByEstadistica, true)['percentatge']  }}</h1>
 
 
-
 </div>
+@endcan

@@ -1,9 +1,10 @@
 @extends('layouts.plantillabase')
 @yield('title', 'Ranking total')
 @yield('content')
+@can('rankingtotal')
 
 <div class = "mt-4">
-    <p class = "text-xl">El teu sistema té un percentatge mitjà d'èxit del {{$percentatgeExit}} '%'</p>
+    <p class = "text-xl">El teu sistema té un percentatge mitjà d'èxit del {{$percentatgeExit}} %'</p>
 </div>
 <div class ="">
     <div class = "m-4">
@@ -23,4 +24,4 @@
         </a>
     </div>
 </div>
-    
+@endcan
