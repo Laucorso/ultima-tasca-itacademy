@@ -25,14 +25,14 @@ Route::get('/', function () {
 
 Route::middleware('auth:api')->group(function(){
 
-    Route::get('players/{id}/games', [PartidaController::class, 'indexByJugador'])->middleware('can:vista.jugador')->name('vistaJugador');
-    Route::get('players', [JugadorController::class, 'llistatJugadors'])->middleware('can:vistaAdmin')->name('vistaAdmin'); 
+    Route::get('players/{id}/games', [PartidaController::class, 'indexByJugador'])->name('vistaJugador');
+    Route::get('players', [JugadorController::class, 'llistatJugadors'])->name('vistaAdmin'); 
 
     Route::post('players/{id}/games', [PartidaController::class, 'store'])->name('partides.store');
     Route::delete('players/{id}/games', [PartidaController::class, 'destroy'])->name('partides.destroy');
-    Route::get('players/{id}/edit', [JugadorController::class, 'edit'])->middleware('can:edit.nickname')->name('jugadors.edit');
-    Route::put('players/{id}', [JugadorController::class, 'update'])->middleware('can:update.nickname')->name('jugadors.update');
-    Route::get('players/ranking', [JugadorController::class, 'percentatgeExitTotal'])->middleware('can:rankingtotal')->name('rankingTotals');
+    Route::get('players/{id}/edit', [JugadorController::class, 'edit'])->name('jugadors.edit');
+    Route::put('players/{id}', [JugadorController::class, 'update'])->name('jugadors.update');
+    Route::get('players/ranking', [JugadorController::class, 'percentatgeExitTotal'])->name('rankingTotals');
     Route::get('players/ranking/loser', [StatusController::class, 'rankingLoser'])->name('rankingLoser');
     Route::get('players/ranking/winner', [StatusController::class, 'rankingWinner'])->name('rankingWinner');
 

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Partida;
 use App\Models\Jugador;
 use App\Models\User;
@@ -17,12 +18,17 @@ class ProjectTest extends TestCase
      *
      * @return void
      */
+   
+
 
     /** @test */
     public function partida_can_be_created()
     {
         $this->withoutExceptionHandling();
-        $response = $this->post('partides.indexByJugador', [
+        $this->withoutMiddleware();
+        
+        $jugador = auth::user()->jugador;
+        $response = $this->post('api/players/games'.$jugador->id, [
             'dau1' => 6,
             'dau2' => 4,
             'resultat' => 0,
@@ -37,16 +43,18 @@ class ProjectTest extends TestCase
         $this->assertEquals($partida->resultat, 0); //comparem valors
 
 
-        $response->assertRedirect('partides.indexByJugador');
+        $response->assertRedirect('partides.indexByJugador', ['id' =>$jugador->id]);
     }
     /**@test */
     public function partides_by_jugador_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
-        $jugador = User::Auth()->jugador;
+        $this->withoutMiddleware();
+
+        $jugador = Auth::user()->jugador;
         $partides = $jugador->partidas;
 
-        $response = $this->get('players/{$jugador->id}/games');
+        $response = $this->get('api/players/games'.$jugador->id);
         $response ->assertOk();
         $response ->assertViewIs('partides.indexByJugador');
         $response ->assertViewHas($partides, ['id' => $jugador->id]);
@@ -56,7 +64,9 @@ class ProjectTest extends TestCase
     public function jugadors_list_can_be_retrieved()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('players');
+        $this->withoutMiddleware();
+
+        $response = $this->get('api/players');
         $response ->assertOk();
         $jugadors = Jugador::all();
         //compararem valors a la vista després de agafar tots els jugadors
@@ -68,9 +78,11 @@ class ProjectTest extends TestCase
     public function nickname_can_be_updated()
     {
         $this->withoutExceptionHandling();
+        $this->withoutMiddleware();
+
         $jugador = Jugador::factory(1)->create();
 
-        $response = $this ->put('/players/{$jugador[0]->id}', [ //volem id del primer i unic element d larray
+        $response = $this ->put('api/players/'.$jugador->id, [ //volem id del primer i unic element d larray
                                                                 //segon parametre es la info q volem modificar
             'nickname' => 'Nickname modificat'
 
@@ -85,12 +97,27 @@ class ProjectTest extends TestCase
     public function partides_can_be_deleted()
     {
         $this->withoutExceptionHandling();
-        $jugador = User::Auth()->jugador;
+        $this->withoutMiddleware();
+        
+        $jugador = Auth::user()->jugador;
         $partides = $jugador->partidas;
-        $response = $this->delete('/players/{$jugador->id}/games');
+        $response = $this->delete('/players/games'.$jugador->id);
         $this->assertCount(0, $partides); //el recompte ha de ser 0 després d'eliminar
-        $response ->assertRedirect('/players/{$jugador->id}/games'); //si coincideix farà redireccio
+        $response ->assertRedirect('/players/games'.$jugador->id); //si coincideix farà redireccio
     }
     
-    //fer tmb testing de les validations
+    /**@test */
+    public function nickname_required(){
+        $this->withoutMiddleware();
+
+        $id = Auth::user()->id;
+        $response = $this->post('api/players/'.$id,[
+            'nickname' =>"",
+        ]);
+        $response ->assertSessionHasErrors(['nickname']);
+
+    }
+    
+
+
 }

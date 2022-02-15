@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Partida;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Jugador;
 
 class JugadorController extends Controller
@@ -13,6 +13,14 @@ class JugadorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /*public function __construct(){
+        $this->middleware('can:edit.nickname')->only('edit','update');
+        $this->middleware('can:vistaAdmin')->only('llistatJugadors');
+        $this->middleware('can:rankingtotal')->only('percentatgeExitTotal');
+        $this->middleware('can:jugadors.show')->only('show');
+
+    }*/
+
     public function llistatJugadors() //OK
     {
         $jugadors = Jugador::all();
@@ -43,6 +51,7 @@ class JugadorController extends Controller
      */
     public function show($id)
     {
+        $id = auth::user()->id;
         $jugador = Jugador::findOrFail($id);
         return view('jugadors.show', compact('jugador'));
 
@@ -69,13 +78,15 @@ class JugadorController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $request->validate([
-            'nickname' => 'unique|required|min:3|string',
+            'nickname' => 'required|min:3|string',
         ]);
-        $jugador = Jugador::find($id);
+        $jugador = Auth::user()->jugador;
         $jugador -> nickname = $request -> input('nickname');
         $jugador ->update();
-        return view('jugadors.show', compact('id', 'jugador'));
+        return view('jugadors.show', compact('id', 'jugador'))->with(['success' => 'Nickname actualitzat amb èxit']);
+    
     }
 
 }

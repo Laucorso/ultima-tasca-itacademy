@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Partida;
-use App\Models\Jugador;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +13,19 @@ class PartidaController extends Controller
      * @return \Illuminate\Http\Response
      */
     
+    /*public function __construct(){
+        $this->middleware('can:vistaJugador')->only('indexByJugador');
+
+    }*/
+    
     public function indexByJugador($id) //OK
     {
-        $jugador = Jugador::find($id);
+        $jugador = auth::user()->jugador;
         $partides = $jugador->partidas;
-        return view('partides.indexByJugador', compact('partides', 'jugador')); 
+      
+        return view('partides.indexByJugador', compact('partides', 'id'));
+        //vull la mtx vista però no tinc cap partida llavors el foreach no funciona pq partides es undefined
+        //fer if a la vista directament? if partides = 0 else fesme el foreach
     }
 
 
@@ -40,7 +46,7 @@ class PartidaController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $jugador = Jugador::find($id);
+        $jugador = auth::user()->jugador;
         $dau1 = rand(1,6);
         $dau2 = rand(1,6);
 
@@ -69,7 +75,8 @@ class PartidaController extends Controller
      */
     public function destroy($id)
     {   
-        $partides = Partida::where('jugador_id', $id)->get()->each->delete();
-        return redirect()->route('vistaJugador', compact('id', 'partides'))->with(['success' => 'Partides eliminades']);
+        $jugador = Auth::user()->jugador;
+        $partides = Partida::where('jugador_id', $jugador->id)->get()->each->delete();
+        return redirect()->route('vistaJugador', compact('id', 'partides'))->with(['success' => 'Partides eliminades amb èxit']);
     }
 }

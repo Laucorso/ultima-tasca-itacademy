@@ -8,10 +8,11 @@ use App\Models\Partida;
 
 class StatusController extends Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
-        
-    }
+        $this->middleware('can:rankingWinner')->only('rankingWinner');
+        $this->middleware('can:rankingLoser')->only('rankingLoser');
+    }*/
 
     public function RankingWinner()
     {
