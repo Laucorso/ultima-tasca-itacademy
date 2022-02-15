@@ -13,6 +13,14 @@ class JugadorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    /*public function __construct(){
+        $this->middleware('can:edit.nickname')->only('edit','update');
+        $this->middleware('can:vistaAdmin')->only('llistatJugadors');
+        $this->middleware('can:rankingtotal')->only('percentatgeExitTotal');
+        $this->middleware('can:jugadors.show')->only('show');
+
+    }*/
     public function llistatJugadors() //OK
     {
         $jugadors = Jugador::all();
