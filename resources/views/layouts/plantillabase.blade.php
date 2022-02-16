@@ -17,7 +17,6 @@
                 <!--Screen-->
                 <div class="min-h-screen flex flex-col">
                     
-                    <!--@include('partials.header')-->
                     
                     <div class="flex flex-1">
                         <main class="bg-white-300 flex-1 p-3 overflow-hidden">
