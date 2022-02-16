@@ -73,6 +73,9 @@ class PartidaController extends Controller
      */
     public function destroy($id)
     {   
+        //$jugador = Jugador::where('user_id', $id)->get();
+        //dd($jugador);
+        
         $jugador = Auth::user()->jugador;
         $partides = Partida::where('jugador_id', $jugador->id)->get()->each->delete();
         return redirect()->route('vistaJugador', compact('id', 'partides'))->with(['success' => 'Partides eliminades amb èxit']);
