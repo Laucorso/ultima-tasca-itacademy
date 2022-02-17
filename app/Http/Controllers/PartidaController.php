@@ -61,7 +61,7 @@ class PartidaController extends Controller
             'jugador_id' => $jugador->id,
         ]);
         
-        return redirect()->route('vistaJugador', compact('id', 'partidaNova'))->with(['success' => 'Partida Realitzada Amb Èxit']);
+        return redirect()->route('vistaJugador', compact(['id','partidaNova']))->with(['success' => 'Partida Realitzada Amb Èxit']);
     }
 
 

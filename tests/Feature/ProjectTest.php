@@ -9,10 +9,17 @@ use App\Models\Partida;
 use App\Models\Jugador;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Http;
+
 
 class ProjectTest extends TestCase
 {
     use RefreshDatabase;
+    use HasRoles;
     /**
      * A basic feature test example.
      *
@@ -25,22 +32,32 @@ class ProjectTest extends TestCase
         $this->withoutExceptionHandling();
         $this->withoutMiddleware();
 
-        $user = User::factory()->create();
+        Passport::actingAs(
+            $user = User::factory()->create(),
+            ['api/players/1/games']
+        );
+        //HAIG DE AUTENTICAR LUSUARI I AGREGARLI EL ROL DE JUGADOR PER PODER CREAR UNA PARTIDA
         $jugador = Jugador::factory()->create([
                 'user_id'=>$user->id
                 ]);
 
-        $id = $jugador->id; 
-        $response = $this->actingAs($user)->post(`api/players/{$user->id}/games`, [
+        $jugadorRole = Role::create(['guard_name' => 'api', 'name' => 'jugador']);
+        Permission::create(['guard_name' => 'api', 'name' => 'vistaJugador'])->assignRole($jugadorRole);
+        $user ->assignRole($jugadorRole);
+
+        $response = $this->actingAs($user)->post('api/players/1/games'
+        ,[ //com li pasem el parametre
             'dau1' => 6,
             'dau2' => 4,
-            'resultat' => 0,
-            'jugador_id' => $id,    //ErrorException: trim() expects parameter 1 to be string, object given
-
+            'resultat' => false,
+            'jugador_id' => $jugador->id,
         ]);
-        
+
+        $this->assertTrue(Auth::check()); //SI
        
-        $response -> assertOk();
+        if($user = 'jugador'){
+            $response -> assertOk();
+        }
         $this->assertCount(1, Partida::all()); //almenys hi ha d'haver una partida
         $partida = Partida::first();
         $this->assertEquals($partida->dau1, 6); //comparem valors del dau
