@@ -6,8 +6,8 @@
         </div>
         <div class="p-1 flex flex-row items-center">
 
-            <img onclick="profileToggle()" class="inline-block h-8 w-8 rounded-full" src="https://avatars0.githubusercontent.com/u/4323180?s=460&v=4" alt="">
-            <a href="#" onclick="profileToggle()" class="text-white p-2 no-underline hidden md:block lg:block">{{ Auth::user()->name }}</a>
+            <img onclick="profileToggle()" class="inline-block h-8 w-8 rounded-full" src="" alt="">
+            <a href="#" onclick="profileToggle()" class="text-white p-2 no-underline hidden md:block lg:block">{{ Auth::user()->first_name }}</a>
             <div id="ProfileDropDown" class="rounded hidden shadow-md bg-white absolute pin-t mt-20 w-auto">
                 <ul class="list-reset">
                     <li>

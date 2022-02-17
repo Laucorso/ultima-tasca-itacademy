@@ -1,6 +1,14 @@
 @extends('layouts.plantillabase')
-@yield('Title', 'Winner')
+@yield('title', 'Winner')
 @yield('content')
+@can('rankingWinner')
+
 <div class ="">
-    <span>El millor jugador del sistema és {{$jugador->nickname}} amb un {{$jugador->percentatge_exit}}</span>
+    
+    <h1>jugador ID =>   {{json_decode($jugadorsByEstadistica, true)['jugador_id']  }}</h1>
+    <h1>Percentatge => {{json_decode($jugadorsByEstadistica, true)['percentatge']  }}</h1>
+
+
 </div>
+@endcan
+

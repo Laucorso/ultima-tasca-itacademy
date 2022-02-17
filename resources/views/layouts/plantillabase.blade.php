@@ -9,9 +9,25 @@
     <title>@yield('title')</title>
 </head>
     <div class = "content">
+        <div class="min-h-screen flex flex-col">
+
         <body>
-            @yield('content')
-            
+                <!--Container -->
+            <div class="mx-auto bg-grey-400">
+                <!--Screen-->
+                <div class="min-h-screen flex flex-col">
+                    
+                    
+                    <div class="flex flex-1">
+                        <main class="bg-white-300 flex-1 p-3 overflow-hidden">
+                                        
+                            @yield('content')
+                                                    
+                        </main>
+                    </div>
+
+                </div>
+            </div>
             <script src= "{!! asset('theme/main.js') !!}"></script>
         </body>
     </div>

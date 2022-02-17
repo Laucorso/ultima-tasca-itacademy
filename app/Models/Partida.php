@@ -15,7 +15,6 @@ class Partida extends Model
         'resultat',
         'jugador_id',
     ];
-    
 
     public function jugador(){
         return $this->belongsTo(Jugador::class);

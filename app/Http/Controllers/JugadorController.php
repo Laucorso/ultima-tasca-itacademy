@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Partida;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Jugador;
+use App\Models\User;
 
 class JugadorController extends Controller
 {
@@ -13,6 +14,14 @@ class JugadorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+        $this->middleware('can:edit.nickname')->only('edit','update');
+        $this->middleware('can:vistaAdmin')->only('llistatJugadors');
+        $this->middleware('can:rankingtotal')->only('percentatgeExitTotal');
+        $this->middleware('can:jugadors.show')->only('show');
+
+    }
+
     public function llistatJugadors() //OK
     {
         $jugadors = Jugador::all();
@@ -25,7 +34,7 @@ class JugadorController extends Controller
        $jugadors = Jugador::all();
        $percentatgeSumatori = 0;
        foreach ($jugadors as $jugador)
-       {
+       {    
             $percentatgeSumatori =  $percentatgeSumatori + $jugador->percentatge_exit;
        }
 
@@ -43,6 +52,7 @@ class JugadorController extends Controller
      */
     public function show($id)
     {
+        $id = auth::user()->id;
         $jugador = Jugador::findOrFail($id);
         return view('jugadors.show', compact('jugador'));
 
@@ -67,15 +77,17 @@ class JugadorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Jugador $id)
+    public function update(Request $request, $id)
     {
+    
         $request->validate([
-            'nickname' => 'unique|required|min:3|string',
+            'nickname' => 'required|unique:jugadors,nickname|min:3|string',
         ]);
         $jugador = Jugador::find($id);
         $jugador -> nickname = $request -> input('nickname');
         $jugador ->update();
-        return redirect()->route('partides.indexByJugador');
+        return view('jugadors.show', compact('id', 'jugador'))->with(['success' => 'Nickname actualitzat amb èxit']);
+    
     }
 
 }

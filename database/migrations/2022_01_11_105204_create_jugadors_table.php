@@ -15,7 +15,7 @@ class CreateJugadorsTable extends Migration
     {
         Schema::create('jugadors', function (Blueprint $table) {
             $table->id();
-            $table->string('nickname');
+            $table->string('nickname')->unique();
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')
                 ->references('id')

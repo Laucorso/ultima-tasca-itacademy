@@ -38,11 +38,12 @@ class PassportController extends Controller
         }
         $id = Auth::user()->id;
         $user = User::find($id);
+        $jugador = Auth::user()->jugador;
 
         if ($user->hasRole('admin')){
-            return redirect()->route('vistaAdmin');
+            return redirect()->route('vistaAdmin'); 
         }else{
-            return redirect()->route('vistaJugador');
+            return redirect()->route('vistaJugador', compact('user', 'jugador'));
         }
     
     }
@@ -57,13 +58,12 @@ class PassportController extends Controller
         $this ->validate($request, [
             'first_name' => 'required|min:3',
             'last_name' => 'required',
-            'email' => 'required|unique|string',
+            'email' => 'required|string',
             'password' => 'required|min:8',
-            'nickname' => 'unique|required|min:3|string'
+            'nickname' => 'required|min:3|string'
         ]);
 
-        try
-        {
+        
         $user = User::create([
             'first_name' => $request -> first_name,
             'last_name' => $request -> last_name,
@@ -73,16 +73,15 @@ class PassportController extends Controller
         $user->assignRole('jugador');
 
         $jugador = Jugador::create([ 
-            'nickname' => $request-> nickname
-        ]); }catch(\Exception $e){
-            return response()->view('errors.registererror');
-        }
+            'nickname' => $request-> nickname,
+            'user_id' => $user->id
+        ]); 
 
         $token = $user -> createToken('PersonalAccesClient')->accessToken;
 
         return response()-> json(['token' => $token], 200);
 
-        return redirect()->route('dashboardJugador', $jugador);
+        return redirect()->route('vistaJugador', ['id' => $jugador->id]);
 
     }
     public function logout (Request $request){

@@ -11,13 +11,22 @@ class Jugador extends Model
 {
     use HasFactory;
 
-    protected $appends = ['percentatge_exit'];
+    protected $appends = ['percentatge_exit'];  //puc fer foreach agafant un per un tots els percentatges exit? i el q vull es ordenarlos de major a menor
+    
+    protected $fillable = [
+        'nickname',
+        'user_id'
+    ];
 
     public function getPercentatgeExitAttribute()
-    {
+    {   
+        $percentatge = 0;
         
-        return $this->partidas->count() * 100 / $this->partidas->where('resultat', '1')->count();
-        
+        if($this->partidas->count()>0){
+            return round($this->partidas->where('resultat', '1')->count() * 100/ $this->partidas->count());
+        }else{
+            return $percentatge;
+        }
     }
 
     public function user(){

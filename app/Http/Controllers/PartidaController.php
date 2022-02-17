@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Partida;
-use App\Models\Jugador;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +13,17 @@ class PartidaController extends Controller
      * @return \Illuminate\Http\Response
      */
     
+    public function __construct(){
+        
+        $this->middleware('can:vistaJugador')->only('indexByJugador');
+    }
+    
     public function indexByJugador($id) //OK
     {
-        $jugador = Jugador::find($id);
+        $jugador = auth::user()->jugador;
         $partides = $jugador->partidas;
-        return view('partides.indexByJugador', compact('partides', 'jugador')); 
+      
+        return view('partides.indexByJugador', compact('partides', 'jugador'));
     }
 
 
@@ -40,7 +44,7 @@ class PartidaController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $jugador = Jugador::find($id);
+        $jugador = auth::user()->jugador;
         $dau1 = rand(1,6);
         $dau2 = rand(1,6);
 
@@ -57,7 +61,7 @@ class PartidaController extends Controller
             'jugador_id' => $jugador->id,
         ]);
         
-        return redirect()->route('vistaJugador', compact('id', 'partidaNova'));
+        return redirect()->route('vistaJugador', compact(['id','partidaNova']))->with(['success' => 'Partida Realitzada Amb Èxit']);
     }
 
 
@@ -69,9 +73,11 @@ class PartidaController extends Controller
      */
     public function destroy($id)
     {   
-        $jugador = Jugador::find($id);
-        $partides = $jugador->partidas;
-        $partides->delete();
-        return redirect()->route('partides.indexByJugador');
+        //$jugador = Jugador::where('user_id', $id)->get();
+        //dd($jugador);
+        
+        $jugador = Auth::user()->jugador;
+        $partides = Partida::where('jugador_id', $jugador->id)->get()->each->delete();
+        return redirect()->route('vistaJugador', compact('id', 'partides'))->with(['success' => 'Partides eliminades amb èxit']);
     }
 }

@@ -19,12 +19,12 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);        
         
-        User::factory(10)->create()->each(function($user){
+        User::factory(15)->create()->each(function($user){
             Jugador::factory()->create([
                 'user_id'=>$user->id
             ]);
             $user->assignRole('jugador');
         });
-        Partida::factory(250)->create();
+        Partida::factory(300)->create();
     }
 }
