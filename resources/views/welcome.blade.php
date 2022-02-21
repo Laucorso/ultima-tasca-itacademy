@@ -18,6 +18,9 @@
         </style>
     </head>
     <body class="antialiased">
+        <div id="app">
+            <plantilla-base></plantilla-base>
+       </div>
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login.store'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -37,5 +40,7 @@
                 
                 @yield('content')
             </div>
+
+            <script src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>
