@@ -22,6 +22,8 @@
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
-        "vue": "^3.2.29"
+        "vue": "^3.2.29",
+        "vue-axios": "^3.4.1",
+        "vue-router": "^4.0.12"
     }
 }
